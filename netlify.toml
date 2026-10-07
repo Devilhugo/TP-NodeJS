@@ -4,7 +4,7 @@
   functions = "netlify/functions"
 
 [build.environment]
-  # Node 22 : nécessaire pour sanitize-html (dépendance htmlparser2 en ES Module)
+  # Version de Node utilisée par Netlify
   NODE_VERSION = "22"
 
 [functions]
