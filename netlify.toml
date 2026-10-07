@@ -3,6 +3,10 @@
   publish = "public"
   functions = "netlify/functions"
 
+[build.environment]
+  # Node 22 : nécessaire pour sanitize-html (dépendance htmlparser2 en ES Module)
+  NODE_VERSION = "22"
+
 [functions]
   # Les vues EJS sont lues à l'exécution : il faut les embarquer dans la fonction
   included_files = ["views/**"]
