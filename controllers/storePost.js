@@ -1,24 +1,23 @@
-const path = require('path');
 const sanitizeHtml = require('sanitize-html');
 const BlogPost = require('../models/BlogPost.js');
+
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 
 module.exports = async (req, res) => {
   try {
     const image = req.files.image;
 
-    if (!image.mimetype.startsWith('image/')) {
+    // Pas de SVG ni d'autre type : seulement des images "classiques"
+    if (!ALLOWED_TYPES.includes(image.mimetype)) {
       return res.redirect('/posts/new');
     }
 
-    // Nom de fichier unique, sans chemin (évite les "../")
-    const fileName = Date.now() + '-' + path.basename(image.name);
-    await image.mv(path.resolve(__dirname, '..', 'public/images', fileName));
-
     await BlogPost.create({
-      title: req.body.title,
-      body: sanitizeHtml(req.body.body || ''), // le HTML de Summernote est nettoyé (anti-XSS)
-      image: '/images/' + fileName,
-      userid: req.session.userId
+      title: String(req.body.title).trim(),
+      body: sanitizeHtml(req.body.body || ''), // anti-XSS
+      imageData: image.data,
+      imageType: image.mimetype,
+      userId: req.session.userId
     });
 
     res.redirect('/');

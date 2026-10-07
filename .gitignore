@@ -2,11 +2,5 @@ node_modules/
 public/images/*
 !public/images/.gitkeep
 .env
-
 .vs/
-
-.vs/
-
-.vs/
-
-.vs/
+.netlify

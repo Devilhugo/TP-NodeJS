@@ -1,0 +1,14 @@
+[build]
+  # Les fichiers statiques (css, js, assets) sont servis directement par Netlify
+  publish = "public"
+  functions = "netlify/functions"
+
+[functions]
+  # Les vues EJS sont lues à l'exécution : il faut les embarquer dans la fonction
+  included_files = ["views/**"]
+
+# Tout ce qui n'est pas un fichier statique part vers l'app Express
+[[redirects]]
+  from = "/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200

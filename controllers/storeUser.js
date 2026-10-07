@@ -8,12 +8,11 @@ module.exports = async (req, res) => {
     });
     res.redirect('/');
   } catch (error) {
-    const validationErrors = error.errors
-      ? Object.keys(error.errors).map(key => error.errors[key].message)
-      : ['Une erreur est survenue, veuillez réessayer.'];
+    if (!error.validationErrors) console.error('Erreur inscription :', error);
+    const validationErrors = error.validationErrors || ['Une erreur est survenue, veuillez réessayer.'];
 
     req.flash('validationErrors', validationErrors);
-    req.flash('data', req.body);
+    req.flash('data', { username: req.body.username });
     res.redirect('/auth/register');
   }
 };

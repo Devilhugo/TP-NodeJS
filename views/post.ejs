@@ -14,7 +14,7 @@
             <h1><%= blogposts.title %></h1>
             <h2 class="subheading"><%- blogposts.body %></h2>
             <span class="meta">Posted by
-              <a href="#"><%= blogposts.userid ? blogposts.userid.username : 'Anonyme' %></a>
+              <a href="#"><%= blogposts.username || 'Anonyme' %></a>
               on <%= blogposts.datePosted.toLocaleDateString('fr-FR') %>
             </span>
           </div>
@@ -29,7 +29,9 @@
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
           <%- blogposts.body %>
-          <img src="<%= blogposts.image %>" class="img-fluid" alt="image article blog" />
+          <% if (blogposts.hasImage) { %>
+            <img src="/image/<%= blogposts.id %>" class="img-fluid" alt="image article blog" />
+          <% } %>
         </div>
       </div>
     </div>

@@ -25,11 +25,11 @@
       <div class="col-lg-8 col-md-10 mx-auto">
         <% for (var i = 0; i < blogposts.length; i++) { %>
           <div class="post-preview">
-            <a href="/post/<%= blogposts[i]._id %>">
+            <a href="/post/<%= blogposts[i].id %>">
               <h2 class="post-title"><%= blogposts[i].title %></h2>
             </a>
             <p class="post-meta">Posted by
-              <a href="#"><%= blogposts[i].userid ? blogposts[i].userid.username : 'Anonyme' %></a>
+              <a href="#"><%= blogposts[i].username || 'Anonyme' %></a>
               on <%= blogposts[i].datePosted.toLocaleDateString('fr-FR') %>
             </p>
           </div>
