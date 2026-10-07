@@ -7,7 +7,7 @@ inscription / connexion (bcrypt + sessions), messages d'erreur flash, page 404.
 - Node.js 18 ou plus
 - PostgreSQL (local ou en ligne : Neon, Netlify DB...)
 
-## Lancer le projet
+## Lancer le projet en local
 ```bash
 npm install
 cp .env.example .env      # puis mettre ta DATABASE_URL dans .env
