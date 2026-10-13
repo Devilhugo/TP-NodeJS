@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 # Blog Node.js API REST
-=======
-# Blog Node.js (TP - Parties 1 et 2 + API JWT)
->>>>>>> a20b8b5 (Ajout de l'API d'authentification JWT (Sequelize, rôles, middlewares))
 
 Blog en Express + EJS + PostgreSQL : posts avec image, éditeur Summernote,
 inscription / connexion (bcrypt + sessions), messages d'erreur flash, page 404.
