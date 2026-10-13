@@ -142,6 +142,34 @@ car les rôles ne sont pas hiérarchiques. Avec `isModeratorOrAdmin`, il reçoit
 Si tu utilises Netlify DB, la variable `NETLIFY_DATABASE_URL` est aussi reconnue.
 Le disque Netlify étant en lecture seule, les images et les sessions sont en base.
 
+### Erreur « The dialect https is not supported »
+`DATABASE_URL` doit être une chaîne de connexion PostgreSQL commençant par
+`postgres://` ou `postgresql://`, pas une adresse HTTPS de console, de projet ou
+d'API. Une URL HTTPS ne peut pas être convertie en connexion PostgreSQL en
+remplaçant simplement son préfixe.
+
+Récupérer la chaîne de connexion dans les paramètres de connexion de la base,
+puis corriger `DATABASE_URL` dans les variables d'environnement Netlify du
+contexte concerné, avec disponibilité pour les Functions, et redéployer.
+Pour une base Netlify liée, utiliser `NETLIFY_DATABASE_URL` et supprimer une
+éventuelle valeur `DATABASE_URL` incorrecte : `DATABASE_URL` reste prioritaire.
+Ne pas copier les identifiants dans le dépôt ni dans les journaux.
+
+Pour récupérer la bonne valeur dans Neon :
+1. Ouvrir le tableau de bord du projet, puis cliquer sur **Connect**.
+2. Sélectionner la branche contenant les données de l'application, la base
+   `neondb` et le rôle PostgreSQL approprié.
+3. Copier la **connection string** PostgreSQL complète, avec ses paramètres SSL.
+   Ne pas copier l'adresse du navigateur ou celle du SQL Editor.
+4. Dans Netlify, remplacer uniquement la valeur de `DATABASE_URL` par cette
+   chaîne, disponible pour les Functions dans le contexte de déploiement utilisé.
+5. Enregistrer et déclencher un nouveau déploiement.
+
+L'adresse du SQL Editor n'indique ni l'hôte PostgreSQL ni les identifiants de
+connexion. Elle ne suffit donc pas à configurer l'application automatiquement.
+Ne pas partager la chaîne de connexion dans une conversation : la renseigner
+directement dans les paramètres sécurisés de Netlify.
+
 ### Secrets et analyse du déploiement
 Les fichiers `.env` et `.env.*` sont ignorés par Git, sauf `.env.example`, qui ne
 contient aucune valeur. Renseigner la connexion PostgreSQL et deux clés aléatoires
