@@ -136,7 +136,7 @@ car les rôles ne sont pas hiérarchiques. Avec `isModeratorOrAdmin`, il reçoit
    - `JWT_SECRET` : une autre longue chaîne aléatoire (**obligatoire** : sans elle
      l'application refuse de démarrer)
    - `CLIENT_ORIGIN` (facultatif) : l'origine du front autorisée par CORS
-   - `NODE_ENV` : `production`
+   - `NODE_ENV` : `production` (exclu du scan de secrets via `netlify.toml`)
 5. Redéployer (Deploys > Trigger deploy).
 
 Si tu utilises Netlify DB, la variable `NETLIFY_DATABASE_URL` est aussi reconnue.
