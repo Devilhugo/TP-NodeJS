@@ -34,3 +34,9 @@ CREATE TABLE IF NOT EXISTS "session" (
 );
 
 CREATE INDEX IF NOT EXISTS "IDX_session_expire" ON "session" ("expire");
+
+-- Email des utilisateurs (API JWT). Facultatif en base pour les comptes
+-- créés avant par le formulaire du blog ; l'API l'exige à l'inscription.
+ALTER TABLE users ADD COLUMN IF NOT EXISTS email VARCHAR(255) UNIQUE;
+
+-- Les tables roles et user_roles de l'API sont créées par Sequelize (db/init.js)

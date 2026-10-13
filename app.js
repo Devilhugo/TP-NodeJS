@@ -4,6 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const cors = require('cors');
 const fileUpload = require('express-fileupload');
 const expressSession = require('express-session');
 const pgSession = require('connect-pg-simple')(expressSession);
@@ -47,6 +48,29 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// ---------- API REST (authentification JWT, sans session) ----------
+// CORS : origine autorisée et en-têtes acceptés
+app.use('/api', cors({
+  origin: process.env.CLIENT_ORIGIN || 'http://localhost:3000',
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-access-token']
+}));
+
+require('./routes/auth.routes')(app);
+require('./routes/user.routes')(app);
+
+// Route d'API inconnue : 404 en JSON
+app.use('/api', (req, res) => {
+  res.status(404).json({ message: 'Ressource introuvable.' });
+});
+
+// Gestionnaire d'erreurs de l'API
+app.use('/api', (err, req, res, next) => {
+  console.error(err);
+  res.status(err.status || 500).json({ message: err.message });
+});
+
+// ---------- Site du blog (sessions) ----------
 app.use(fileUpload({
   limits: { fileSize: 4 * 1024 * 1024 }, // 4 Mo max (limite Netlify : 6 Mo par requête, encodage base64 compris)
   abortOnLimit: true
