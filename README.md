@@ -15,7 +15,7 @@ dialecte change). Les comptes sont partagés entre le site et l'API.
 ## Lancer le projet en local
 ```bash
 npm install
-cp .env.example .env      # puis mettre DATABASE_URL et JWT_SECRET dans .env
+cp .env.example .env      # puis renseigner DATABASE_URL, SESSION_SECRET et JWT_SECRET
 npm run db:init           # crée users, blogposts, session, roles, user_roles
 npm start
 ```
@@ -132,7 +132,7 @@ car les rôles ne sont pas hiérarchiques. Avec `isModeratorOrAdmin`, il reçoit
 3. Sur Netlify : Add new site > Import an existing project > GitHub > `TP-NodeJS`.
 4. Dans Site configuration > Environment variables, ajouter :
    - `DATABASE_URL` : la chaîne de connexion PostgreSQL
-   - `SESSION_SECRET` : une longue chaîne aléatoire
+   - `SESSION_SECRET` : une longue chaîne aléatoire (**obligatoire**)
    - `JWT_SECRET` : une autre longue chaîne aléatoire (**obligatoire** : sans elle
      l'application refuse de démarrer)
    - `CLIENT_ORIGIN` (facultatif) : l'origine du front autorisée par CORS
@@ -141,3 +141,21 @@ car les rôles ne sont pas hiérarchiques. Avec `isModeratorOrAdmin`, il reçoit
 
 Si tu utilises Netlify DB, la variable `NETLIFY_DATABASE_URL` est aussi reconnue.
 Le disque Netlify étant en lecture seule, les images et les sessions sont en base.
+
+### Secrets et analyse du déploiement
+Les fichiers `.env` et `.env.*` sont ignorés par Git, sauf `.env.example`, qui ne
+contient aucune valeur. Renseigner la connexion PostgreSQL et deux clés aléatoires
+distinctes dans le fichier `.env` local et dans les variables d'environnement
+Netlify, disponibles pour les Functions dans chaque contexte de déploiement utilisé.
+Aucune connexion ni clé de session de secours n'est intégrée au code.
+
+L'analyse des secrets reste activée. Seules les variables non sensibles `NODE_ENV`,
+`CLIENT_ORIGIN` et `JWT_EXPIRES_IN` sont exclues par `SECRETS_SCAN_OMIT_KEYS` dans
+`[build.environment]` : leurs valeurs peuvent légitimement figurer dans le code.
+Ne pas exclure `DATABASE_URL`, `NETLIFY_DATABASE_URL`, `SESSION_SECRET` ou `JWT_SECRET`.
+
+Si une clé ou une connexion a été publiée, la remplacer immédiatement auprès du
+fournisseur et dans Netlify. Supprimer une valeur du code ne l'efface pas de
+l'historique Git. Le journal fourni ne contient pas les lignes identifiant le
+fichier détecté ; si le prochain déploiement échoue, consulter ces lignes sans
+partager les valeurs sensibles.
