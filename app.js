@@ -1,4 +1,8 @@
 require('dotenv').config();
+if (!process.env.SESSION_SECRET) {
+  throw new Error("La variable d'environnement SESSION_SECRET n'est pas définie.");
+}
+
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
@@ -76,7 +80,7 @@ app.use(fileUpload({
   abortOnLimit: true
 }));
 app.use(expressSession({
-  secret: process.env.SESSION_SECRET || 'nodejs est top',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   // Sessions stockées dans PostgreSQL (table "session") : indispensable en serverless

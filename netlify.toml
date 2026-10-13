@@ -8,7 +8,7 @@
   NODE_VERSION = "22"
   # NODE_ENV=production n'est pas un secret : on l'exclut du scan de secrets
   # (sinon la valeur "production", présente partout dans le code, bloque le build)
-  SECRETS_SCAN_OMIT_KEYS = "NODE_ENV"
+  SECRETS_SCAN_OMIT_KEYS = "NODE_ENV,CLIENT_ORIGIN,JWT_EXPIRES_IN"
 
 [functions]
   # Les vues EJS sont lues à l'exécution : il faut les embarquer dans la fonction
