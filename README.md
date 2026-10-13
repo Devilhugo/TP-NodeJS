@@ -1,4 +1,4 @@
-# Blog Node.js (TP - Parties 1 et 2)
+# Blog Node.js API REST
 
 Blog en Express + EJS + PostgreSQL : posts avec image, éditeur Summernote,
 inscription / connexion (bcrypt + sessions), messages d'erreur flash, page 404.
